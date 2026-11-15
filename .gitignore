@@ -31,5 +31,5 @@ design/
 .env.*
 .claude/
 
-# macOS installers from scripts/build.sh
+# Installers from scripts/build.sh and scripts/build-windows.ps1
 release/
