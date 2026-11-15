@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kbot — AI agents that work for you</title>
+<meta name="description" content="Kbot is a desktop app for personal AI agents. Create bots that chat, run daily jobs, follow a schedule, and work together in teams, on Claude or Codex.">
+<meta property="og:title" content="Kbot — Don't just chat with AI. Put it to work.">
+<meta property="og:description" content="Personal AI agents on your Mac: chat bots, daily jobs, scheduled tasks and Agent Teams, on Claude or Codex.">
+<meta property="og:image" content="assets/videos/team-agent.jpg">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<style>
+:root {
+  --bg: #fafaf9;
+  --bg-alt: #f2f2f0;
+  --card: #ffffff;
+  --text: #18181b;
+  --muted: #5f5f66;
+  --line: #e4e4e1;
+  --accent: #0f9d6e;
+  --accent-ink: #ffffff;
+  --accent-soft: #e3f5ee;
+  --code-bg: #f0f0ed;
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111113;
+    --bg-alt: #17171a;
+    --card: #1c1c20;
+    --text: #ececef;
+    --muted: #a0a0a8;
+    --line: #2c2c32;
+    --accent: #34c48f;
+    --accent-ink: #08130e;
+    --accent-soft: #15302a;
+    --code-bg: #232328;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111113;
+  --bg-alt: #17171a;
+  --card: #1c1c20;
+  --text: #ececef;
+  --muted: #a0a0a8;
+  --line: #2c2c32;
+  --accent: #34c48f;
+  --accent-ink: #08130e;
+  --accent-soft: #15302a;
+  --code-bg: #232328;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88em; }
+code { background: var(--code-bg); padding: .12em .4em; border-radius: 5px; }
+pre { background: var(--code-bg); padding: 12px 14px; border-radius: 10px; overflow-x: auto; margin: 8px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+pre code { background: none; padding: 0; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+
+/* nav */
+nav.top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+nav.top .wrap { display: flex; align-items: center; gap: 20px; height: 56px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--text); font-size: 18px; }
+.brand:hover { text-decoration: none; }
+.brand img { width: 28px; height: 28px; border-radius: 7px; }
+nav.top .links { display: flex; gap: 18px; margin-left: auto; font-size: 14px; }
+nav.top .links a { color: var(--muted); }
+nav.top .links a:hover { color: var(--text); text-decoration: none; }
+@media (max-width: 720px) { nav.top .links a.opt { display: none; } }
+
+/* hero */
+.hero { padding: 64px 0 40px; text-align: center; }
+.hero .logo { width: 88px; height: 88px; border-radius: 20px; box-shadow: var(--shadow); }
+.hero h1 { font-size: clamp(34px, 6vw, 56px); line-height: 1.08; letter-spacing: -.02em; margin: 22px auto 14px; max-width: 820px; }
+.hero h1 span { color: var(--accent); display: block; }
+.hero p.lead { font-size: clamp(17px, 2.2vw, 20px); color: var(--muted); max-width: 680px; margin: 0 auto; }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 30px 0 12px; }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 12px; font-weight: 600; font-size: 16px; border: 1px solid var(--line); background: var(--card); color: var(--text); }
+.btn:hover { text-decoration: none; }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.primary:hover { filter: brightness(1.06); }
+.btn.disabled { color: var(--muted); cursor: default; }
+.btn svg { width: 18px; height: 18px; flex: none; }
+.btn small { font-weight: 500; opacity: .8; font-size: 13px; }
+.meta { color: var(--muted); font-size: 14px; }
+.hero-video { margin: 40px auto 0; max-width: 1000px; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow); background: var(--card); }
+.hero-video video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; }
+
+/* sections */
+section { padding: 64px 0; }
+section.alt { background: var(--bg-alt); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.section-head { max-width: 680px; margin: 0 0 32px; }
+.section-head .eyebrow { color: var(--accent); font-weight: 600; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+.section-head h2 { font-size: clamp(26px, 4vw, 36px); letter-spacing: -.015em; line-height: 1.15; margin: 6px 0 10px; }
+.section-head p { color: var(--muted); margin: 0; font-size: 17px; }
+
+/* demos */
+.demo { display: grid; grid-template-columns: 1fr 1.6fr; gap: 36px; align-items: center; padding: 28px 0; }
+.demo + .demo { border-top: 1px solid var(--line); }
+.demo:nth-child(even) { grid-template-columns: 1.6fr 1fr; }
+.demo:nth-child(even) .demo-text { order: 2; }
+.demo-text .num { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: 14px; }
+.demo-text h3 { font-size: 24px; margin: 12px 0 8px; letter-spacing: -.01em; }
+.demo-text p { color: var(--muted); margin: 0 0 12px; }
+.demo-text ul { margin: 0; padding-left: 18px; color: var(--muted); }
+.demo-text li { margin: 4px 0; }
+.demo-media { border-radius: 14px; overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow); background: var(--card); }
+.demo-media video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; }
+@media (max-width: 860px) {
+  .demo, .demo:nth-child(even) { grid-template-columns: 1fr; gap: 18px; }
+  .demo:nth-child(even) .demo-text { order: 0; }
+}
+
+/* features */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 22px; }
+.card .ico { width: 40px; height: 40px; border-radius: 10px; background: var(--accent-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+.card .ico svg { width: 22px; height: 22px; }
+.card h3 { margin: 0 0 6px; font-size: 17px; }
+.card p { margin: 0; color: var(--muted); font-size: 15px; }
+.card .since { display: inline-block; margin-top: 12px; font-size: 12px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 1px 9px; }
+@media (max-width: 400px) { .grid { grid-template-columns: 1fr; } }
+
+/* changelog */
+.timeline { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--line); }
+.timeline > li { position: relative; padding: 0 0 30px 26px; }
+.timeline > li::before { content: ""; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg-alt); border: 2px solid var(--accent); }
+.timeline > li:first-child::before { background: var(--accent); }
+.timeline .ver { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; }
+.timeline .ver h3 { margin: 0; font-size: 20px; }
+.timeline .ver time { color: var(--muted); font-size: 14px; }
+.timeline .ver .tag { font-size: 12px; font-weight: 600; color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 1px 9px; }
+.timeline ul { margin: 8px 0 0; padding-left: 18px; color: var(--muted); }
+.timeline li li { margin: 4px 0; }
+.timeline li li b { color: var(--text); font-weight: 600; }
+
+/* install */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.steps .card h3 { display: flex; align-items: center; gap: 10px; }
+.steps .card ol { margin: 8px 0 0; padding-left: 20px; color: var(--muted); font-size: 15px; }
+.steps .card ol li { margin: 6px 0; }
+.steps .card p + pre, .steps .card ol + pre { margin-top: 10px; }
+.note { margin-top: 18px; color: var(--muted); font-size: 14px; }
+
+/* final cta */
+.final { text-align: center; }
+.final h2 { font-size: clamp(26px, 4vw, 36px); margin: 0 0 8px; }
+.final p { color: var(--muted); margin: 0; }
+
+footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--muted); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; align-items: center; }
+footer a { color: var(--muted); }
+.theme-toggle { background: none; border: 1px solid var(--line); color: var(--muted); border-radius: 8px; width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+.theme-toggle svg { width: 16px; height: 16px; }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="wrap">
+    <a class="brand" href="#"><img src="assets/logo.png" alt="">Kbot</a>
+    <div class="links">
+      <a class="opt" href="#demos">Demos</a>
+      <a class="opt" href="#features">Features</a>
+      <a class="opt" href="#changelog">Changelog</a>
+      <a href="#install">Install</a>
+      <a href="https://github.com/duychung-keytechx/Kbot">GitHub</a>
+    </div>
+    <button class="theme-toggle" id="theme" aria-label="Switch light or dark theme" title="Switch theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <img class="logo" src="assets/logo.png" alt="Kbot logo">
+    <h1>Don't just chat with AI. <span>Put it to work.</span></h1>
+    <p class="lead">Kbot is a desktop app for personal AI agents. Make a bot for a job, and it chats with you, runs every morning, follows a schedule, or works with other bots as a team. It runs on Claude or Codex, and your bots and chats are stored on your computer.</p>
+    <div class="ctas">
+      <a class="btn primary" href="https://github.com/duychung-keytechx/Kbot/releases/download/v1.0.5/Kbot_1.0.5_universal.dmg">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.14-2.76.83-3.47.83-.72 0-1.82-.81-2.99-.79-1.54.02-2.96.9-3.75 2.27-1.6 2.78-.41 6.89 1.15 9.14.76 1.1 1.67 2.34 2.86 2.3 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.77.74 2.98.72 1.24-.02 2.02-1.12 2.77-2.23.88-1.28 1.24-2.52 1.26-2.59-.03-.01-2.41-.93-2.44-3.65zM14.1 5.86c.63-.77 1.06-1.83.94-2.9-.91.04-2.02.61-2.67 1.37-.58.67-1.1 1.76-.96 2.8 1.02.08 2.06-.52 2.69-1.27z"/></svg>
+        Download for macOS <small>v1.0.5</small>
+      </a>
+      <span class="btn disabled" aria-disabled="true">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.5 10.5 4.5v7H3zm0 13 7.5 1v-7H3zm8.5 1.1L21 21v-8.5h-9.5zm0-15.2V11.5H21V3z"/></svg>
+        Windows <small>coming soon</small>
+      </span>
+    </div>
+    <div class="meta">Universal build for Apple Silicon and Intel · macOS 10.13 or later · <a href="https://github.com/duychung-keytechx/Kbot/releases">All releases</a></div>
+    <div class="hero-video">
+      <video src="assets/videos/team-agent.mp4" poster="assets/videos/team-agent.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Kbot Agent Teams demo"></video>
+    </div>
+  </div>
+</header>
+
+<section id="demos" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">See it work</div>
+      <h2>Five things Kbot does</h2>
+      <p>Each clip is a real run through the app, from an empty sidebar to a finished answer.</p>
+    </div>
+
+    <div class="demos">
+      <div class="demo">
+        <div class="demo-text">
+          <span class="num">1</span>
+          <h3>Create a bot and chat with it</h3>
+          <p>Name a bot, pick a picture, and choose "Chat with me". The bot sets itself up in the chat by asking you a few questions.</p>
+          <ul>
+            <li>Turn web access on or off</li>
+            <li>Pick the folder it works in</li>
+            <li>Tell it what to focus on, then just ask</li>
+          </ul>
+        </div>
+        <div class="demo-media"><video data-src="assets/videos/chat-bot.mp4" poster="assets/videos/chat-bot.jpg" muted loop playsinline preload="none" aria-label="Create a chat bot demo"></video></div>
+      </div>
+
+      <div class="demo">
+        <div class="demo-text">
+          <span class="num">2</span>
+          <h3>A bot that runs every day</h3>
+          <p>Choose "Run a daily job", set the time and the days, and the bot does its work on its own. Results land in the chat with an unread count and a Dock badge.</p>
+          <ul>
+            <li>Pick the time and the weekdays</li>
+            <li>Change the job later in Settings</li>
+            <li>Hit "Run now" to try it right away</li>
+          </ul>
+        </div>
+        <div class="demo-media"><video data-src="assets/videos/daily-bot.mp4" poster="assets/videos/daily-bot.jpg" muted loop playsinline preload="none" aria-label="Daily bot demo"></video></div>
+      </div>
+
+      <div class="demo">
+        <div class="demo-text">
+          <span class="num">3</span>
+          <h3>Schedule a task</h3>
+          <p>Choose "Schedule a task" for work that runs on a date, every few hours, or every month, like a monthly expense report.</p>
+          <ul>
+            <li>Run once, at an interval, or monthly</li>
+            <li>Point it at a folder of files</li>
+            <li>Run it early from the chat header</li>
+          </ul>
+        </div>
+        <div class="demo-media"><video data-src="assets/videos/schedule-bot.mp4" poster="assets/videos/schedule-bot.jpg" muted loop playsinline preload="none" aria-label="Scheduled bot demo"></video></div>
+      </div>
+
+      <div class="demo">
+        <div class="demo-text">
+          <span class="num">4</span>
+          <h3>Agent Teams</h3>
+          <p>Put bots together in a team and give it a goal. A lead plans the work, hands each part to the right member, and brings the results back as one answer.</p>
+          <ul>
+            <li>Add existing bots or create new ones</li>
+            <li>Let the team decide, or set a custom flow</li>
+            <li>Open any member's chat to see its work</li>
+          </ul>
+        </div>
+        <div class="demo-media"><video data-src="assets/videos/team-agent.mp4" poster="assets/videos/team-agent.jpg" muted loop playsinline preload="none" aria-label="Agent Teams demo"></video></div>
+      </div>
+
+      <div class="demo">
+        <div class="demo-text">
+          <span class="num">5</span>
+          <h3>Pick the AI for each bot</h3>
+          <p>Every bot can use its own provider, model and reasoning effort. Put a hard research job on a big model and a quick sorter on a fast one.</p>
+          <ul>
+            <li>Claude or Codex, per bot</li>
+            <li>Model and effort in Edit › AI Provider</li>
+            <li>"Use Kbot Settings" to follow the app default</li>
+          </ul>
+        </div>
+        <div class="demo-media"><video data-src="assets/videos/bot-model.mp4" poster="assets/videos/bot-model.jpg" muted loop playsinline preload="none" aria-label="Pick a model per bot demo"></video></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Everything in Kbot</div>
+      <h2>Features</h2>
+      <p>All of it, from every release so far.</p>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V4"/><circle cx="12" cy="3" r="1"/><circle cx="9" cy="14" r="1"/><circle cx="15" cy="14" r="1"/></svg></div>
+        <h3>Personal agents</h3>
+        <p>Make a bot for each job. Each one has its own name, picture, instructions, folder and chat history.</p>
+        <span class="since">1.0.0</span>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg></div>
+        <h3>Setup in the chat</h3>
+        <p>A new bot asks what it should do, then writes its own instructions for you to confirm.</p>
+        <span class="since">1.0.0</span>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div>
+        <h3>Edit any time</h3>
+        <p>Type <code>/setup</code> and say what to change in your own words, even "rename yourself". Or right-click a bot and choose Edit to change its name, instructions, folders and web search in one place.</p>
+        <span class="since">1.0.1</span>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+        <h3>Scheduled jobs</h3>
+        <p>Run a bot daily on chosen weekdays, every few minutes or hours, on a set date, or once a month. Kbot runs the job and posts the result.</p>
+        <span class="since">1.0.0</span>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
+        <h3>Unread counts and Dock badge</h3>
+        <p>When a job finishes while you're away, the bot shows an unread count in the sidebar and the Dock icon shows the total.</p>
+        <span class="since">1.0.0</span>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></div>
+        <h3>Questions and approvals</h3>
+        <p>When the AI needs a choice or your OK before it acts, the options show up in the chat as buttons.</p>
+        <span class="since">1.0.0</span>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <h3>Your data stays local</h3>
+        <p>Bots and chats are stored in SQLite on your Mac. Kbot runs the Claude Code or Codex CLI you're already signed in to.</p>
+        <span class="since">1.0.0</span>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg></div>
+        <h3>Bot pictures and a resizable sidebar</h3>
+        <p>Pick one of 20 bot pictures so you can tell your bots apart. Drag the sidebar to the width you like, and double-click its edge to reset it.</p>
+        <span class="since">1.0.1</span>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <h3>Claude or Codex, plus dark mode</h3>
+        <p>Run on Claude Code or the OpenAI Codex CLI, including a local model through Codex. Pick the model and reasoning effort in Settings › AI Providers. Dark mode covers the whole app.</p>
+        <span class="since">1.0.2</span>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg></div>
+        <h3>Tags, filters and search</h3>
+        <p>Group bots with colored tags. Click a tag chip to filter the sidebar, or search by bot or tag name.</p>
+        <span class="since">1.0.3</span>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></svg></div>
+        <h3>Chat commands</h3>
+        <p>Type <code>/</code> in the chat box: <code>/setup</code> to change the bot, <code>/clear-history</code> to clear the chat, <code>/delete</code> to remove the bot.</p>
+        <span class="since">1.0.3</span>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg></div>
+        <h3>Agent Teams</h3>
+        <p>Send one message to a team. The lead plans the work, hands out tasks, checks each result and replies with one answer. Let it decide, or drag members into a custom flow. Pause, retry or skip from the plan card, and <code>@mention</code> one member.</p>
+        <span class="since">1.0.4</span>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9z"/></svg></div>
+        <h3>MCP servers and tools</h3>
+        <p>Bots run isolated by default. Turn on the switch and a bot uses your own CLI setup: MCP servers like JIRA, plugins, hooks, and Claude in Chrome.</p>
+        <span class="since">1.0.4</span>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg></div>
+        <h3>An AI model for each bot</h3>
+        <p>Give any bot its own provider, model and effort in Edit › AI Provider. Chats, jobs and teams all use it, and changing it keeps the conversation.</p>
+        <span class="since">1.0.5</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="changelog" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Release notes</div>
+      <h2>Changelog</h2>
+      <p>Every release, newest first. Full notes on <a href="https://github.com/duychung-keytechx/Kbot/releases">GitHub Releases</a>.</p>
+    </div>
+    <ol class="timeline">
+      <li>
+        <div class="ver"><h3>1.0.5</h3><time datetime="2026-11-13">Nov 13, 2026</time><span class="tag">Latest</span></div>
+        <ul>
+          <li><b>Each bot picks its own AI.</b> A new AI Provider tab in Edit sets the provider (Claude or Codex), model and reasoning effort for one bot. "Use Kbot Settings" goes back to the app default.</li>
+          <li>Chats, jobs, onboarding and team planning all run on the bot's own choice. Changing only the model keeps the conversation.</li>
+          <li>A bot on a provider that isn't set up tells you how to fix it.</li>
+        </ul>
+      </li>
+      <li>
+        <div class="ver"><h3>1.0.4</h3><time datetime="2026-11-07">Nov 7, 2026</time></div>
+        <ul>
+          <li><b>Agent Teams.</b> Click "+" › New team. A lead plans the work, hands each member a task, checks each result and replies with one answer.</li>
+          <li>Let it decide, or build a custom flow on a list or canvas. A plan card lets you pause, edit, retry or skip. Up to 3 members work at once.</li>
+          <li><b>@Name</b> talks to one member, and <b>Open ›</b> shows a member's chat. Team settings cover info, orchestrator, members, flow and tags.</li>
+          <li><b>MCP servers &amp; tools switch:</b> let a bot use your own Claude Code or Codex setup.</li>
+        </ul>
+      </li>
+      <li>
+        <div class="ver"><h3>1.0.3</h3><time datetime="2026-10-29">Oct 29, 2026</time></div>
+        <ul>
+          <li><b>Tags</b> with colors, a tag filter under Search, and tags shown on each bot.</li>
+          <li><b>Redesigned Edit dialog</b> with Agent Info and Tags tabs.</li>
+          <li><b>Chat commands:</b> <code>/setup</code>, <code>/clear-history</code> and <code>/delete</code>.</li>
+        </ul>
+      </li>
+      <li>
+        <div class="ver"><h3>1.0.2</h3><time datetime="2026-10-28">Oct 28, 2026</time></div>
+        <ul>
+          <li><b>Run on Codex.</b> Pick Claude or Codex in Settings › AI Providers. Codex works with ChatGPT sign-in, an API key, or a local model.</li>
+          <li><b>Redesigned Settings</b> with a ready check, a model list and reasoning effort.</li>
+          <li><b>Dark mode</b>, and a Claude model and a Codex model for each agent.</li>
+        </ul>
+      </li>
+      <li>
+        <div class="ver"><h3>1.0.1</h3><time datetime="2026-10-26">Oct 26, 2026</time></div>
+        <ul>
+          <li><b>Edit dialog:</b> right-click a bot and choose Edit.</li>
+          <li><b>Rename with <code>/setup</code></b> in your own words.</li>
+          <li><b>Bot pictures</b> and a <b>resizable sidebar</b>.</li>
+        </ul>
+      </li>
+      <li>
+        <div class="ver"><h3>1.0.0</h3><time datetime="2026-10-26">Oct 26, 2026</time></div>
+        <ul>
+          <li>First release: personal agents with setup in the chat, and <code>/setup</code> to change them.</li>
+          <li>Scheduled jobs (daily, every few minutes or hours, or on a date), with unread counts and a Dock badge.</li>
+          <li>Questions and approvals in the chat. All data stored locally in SQLite.</li>
+        </ul>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section id="install">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Get started</div>
+      <h2>Install Kbot</h2>
+      <p>Three steps on a Mac. A Windows installer is coming soon.</p>
+    </div>
+    <div class="steps">
+      <div class="card">
+        <h3><span class="num" style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:13px">1</span>Download and install</h3>
+        <ol>
+          <li><a href="https://github.com/duychung-keytechx/Kbot/releases/download/v1.0.5/Kbot_1.0.5_universal.dmg">Download Kbot_1.0.5_universal.dmg</a>.</li>
+          <li>Open it and drag <b>Kbot</b> into <b>Applications</b>.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3><span class="num" style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:13px">2</span>Open it the first time</h3>
+        <ol>
+          <li>The build isn't notarized by Apple yet, so macOS blocks the first launch. Open <b>System Settings › Privacy &amp; Security</b>, scroll down and click <b>Open Anyway</b>.</li>
+          <li>Or run this in Terminal:</li>
+        </ol>
+        <pre><code>xattr -dr com.apple.quarantine /Applications/Kbot.app</code></pre>
+      </div>
+      <div class="card">
+        <h3><span class="num" style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:13px">3</span>Sign in to an AI</h3>
+        <p style="color:var(--muted);font-size:15px;margin:8px 0 0">Claude (the default) needs a Pro or Max plan. Codex works with ChatGPT sign-in, an API key, or a model set in <code>~/.codex/config.toml</code>.</p>
+        <pre><code># Claude
+curl -fsSL https://claude.ai/install.sh | bash
+claude auth login
+
+# or Codex
+npm install -g @openai/codex
+codex login</code></pre>
+      </div>
+    </div>
+    <p class="note">Universal build: Apple Silicon and Intel, macOS 10.13 or later.</p>
+  </div>
+</section>
+
+<section class="alt final">
+  <div class="wrap">
+    <h2>Put your first bot to work</h2>
+    <p>Free and open source under the MIT license.</p>
+    <div class="ctas">
+      <a class="btn primary" href="https://github.com/duychung-keytechx/Kbot/releases/download/v1.0.5/Kbot_1.0.5_universal.dmg">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.14-2.76.83-3.47.83-.72 0-1.82-.81-2.99-.79-1.54.02-2.96.9-3.75 2.27-1.6 2.78-.41 6.89 1.15 9.14.76 1.1 1.67 2.34 2.86 2.3 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.77.74 2.98.72 1.24-.02 2.02-1.12 2.77-2.23.88-1.28 1.24-2.52 1.26-2.59-.03-.01-2.41-.93-2.44-3.65zM14.1 5.86c.63-.77 1.06-1.83.94-2.9-.91.04-2.02.61-2.67 1.37-.58.67-1.1 1.76-.96 2.8 1.02.08 2.06-.52 2.69-1.27z"/></svg>
+        Download for macOS
+      </a>
+      <span class="btn disabled" aria-disabled="true">Windows <small>coming soon</small></span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>© 2026 Keytechx · MIT License</div>
+    <div><a href="https://github.com/duychung-keytechx/Kbot">GitHub</a> · <a href="https://github.com/duychung-keytechx/Kbot/releases">Releases</a> · <a href="https://github.com/duychung-keytechx/Kbot/issues">Report an issue</a></div>
+  </div>
+</footer>
+
+<script>
+// Load and play each demo video only while it's on screen.
+(function () {
+  var vids = document.querySelectorAll('video[data-src]');
+  if (!('IntersectionObserver' in window)) {
+    vids.forEach(function (v) { v.src = v.dataset.src; v.autoplay = true; });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      var v = e.target;
+      if (e.isIntersecting) {
+        if (!v.src) { v.src = v.dataset.src; }
+        var p = v.play(); if (p && p.catch) p.catch(function () {});
+      } else if (!v.paused) {
+        v.pause();
+      }
+    });
+  }, { threshold: 0.35 });
+  vids.forEach(function (v) { io.observe(v); });
+})();
+
+// Light / dark switch, remembered per browser.
+(function () {
+  var root = document.documentElement, key = 'kbot-theme';
+  try { var saved = localStorage.getItem(key); if (saved) root.dataset.theme = saved; } catch (e) {}
+  document.getElementById('theme').addEventListener('click', function () {
+    var dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    root.dataset.theme = dark ? 'light' : 'dark';
+    try { localStorage.setItem(key, root.dataset.theme); } catch (e) {}
+  });
+})();
+</script>
+</body>
+</html>
