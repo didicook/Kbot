@@ -3,6 +3,14 @@
 <p align="center"><b>Don't just chat with AI. Put it to work.</b></p>
 
 <p align="center">
+<a href="https://duychung-keytechx.github.io/Kbot/"><b>Website and demo videos</b></a>
+&nbsp;·&nbsp;
+<a href="https://github.com/duychung-keytechx/Kbot/releases/latest"><b>Download for macOS</b></a>
+&nbsp;·&nbsp;
+Windows coming soon
+</p>
+
+<p align="center">
 Kbot is more than a chatbot. It lets anyone build <b>personal agents</b> shaped
 around their own needs: a sales assistant that finds leads, a recruiter that
 screens candidates, a researcher that digs through the web. Each one is yours to
