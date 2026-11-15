@@ -10,35 +10,9 @@
 <meta property="og:image" content="assets/videos/team-agent.jpg">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <style>
+/* Dark is the default theme. The moon/sun button switches to light, and the choice is remembered. */
 :root {
-  --bg: #fafaf9;
-  --bg-alt: #f2f2f0;
-  --card: #ffffff;
-  --text: #18181b;
-  --muted: #5f5f66;
-  --line: #e4e4e1;
-  --accent: #0f9d6e;
-  --accent-ink: #ffffff;
-  --accent-soft: #e3f5ee;
-  --code-bg: #f0f0ed;
-  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #111113;
-    --bg-alt: #17171a;
-    --card: #1c1c20;
-    --text: #ececef;
-    --muted: #a0a0a8;
-    --line: #2c2c32;
-    --accent: #34c48f;
-    --accent-ink: #08130e;
-    --accent-soft: #15302a;
-    --code-bg: #232328;
-    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
-  }
-}
-:root[data-theme="dark"] {
+  color-scheme: dark;
   --bg: #111113;
   --bg-alt: #17171a;
   --card: #1c1c20;
@@ -50,6 +24,20 @@
   --accent-soft: #15302a;
   --code-bg: #232328;
   --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #fafaf9;
+  --bg-alt: #f2f2f0;
+  --card: #ffffff;
+  --text: #18181b;
+  --muted: #5f5f66;
+  --line: #e4e4e1;
+  --accent: #0f9d6e;
+  --accent-ink: #ffffff;
+  --accent-soft: #e3f5ee;
+  --code-bg: #f0f0ed;
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -164,6 +152,10 @@ footer a { color: var(--muted); }
 .theme-toggle { background: none; border: 1px solid var(--line); color: var(--muted); border-radius: 8px; width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
 .theme-toggle svg { width: 16px; height: 16px; }
 </style>
+<script>
+// Apply a saved light/dark choice before the page draws, so it doesn't flash.
+try { var t = localStorage.getItem('kbot-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 </head>
 <body>
 
@@ -529,10 +521,8 @@ codex login</code></pre>
 // Light / dark switch, remembered per browser.
 (function () {
   var root = document.documentElement, key = 'kbot-theme';
-  try { var saved = localStorage.getItem(key); if (saved) root.dataset.theme = saved; } catch (e) {}
   document.getElementById('theme').addEventListener('click', function () {
-    var dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-    root.dataset.theme = dark ? 'light' : 'dark';
+    root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
     try { localStorage.setItem(key, root.dataset.theme); } catch (e) {}
   });
 })();
