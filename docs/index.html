@@ -6,7 +6,7 @@
 <title>Kbot — AI agents that work for you</title>
 <meta name="description" content="Kbot is a desktop app for personal AI agents. Create bots that chat, run daily jobs, follow a schedule, and work together in teams, on Claude or Codex.">
 <meta property="og:title" content="Kbot — Don't just chat with AI. Put it to work.">
-<meta property="og:description" content="Personal AI agents on your Mac: chat bots, daily jobs, scheduled tasks and Agent Teams, on Claude or Codex.">
+<meta property="og:description" content="Personal AI agents on your Mac or Windows PC: chat bots, daily jobs, scheduled tasks and Agent Teams, on Claude or Codex.">
 <meta property="og:image" content="assets/videos/team-agent.jpg">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <style>
@@ -140,6 +140,8 @@ section.alt { background: var(--bg-alt); border-top: 1px solid var(--line); bord
 .steps .card ol li { margin: 6px 0; }
 .steps .card p + pre, .steps .card ol + pre { margin-top: 10px; }
 .note { margin-top: 18px; color: var(--muted); font-size: 14px; }
+.steps .os { margin: 14px 0 0; font-size: 14px; font-weight: 600; color: var(--text); }
+.steps .os + ol { margin-top: 4px; }
 
 /* final cta */
 .final { text-align: center; }
@@ -185,12 +187,12 @@ try { var t = localStorage.getItem('kbot-theme'); if (t) document.documentElemen
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.14-2.76.83-3.47.83-.72 0-1.82-.81-2.99-.79-1.54.02-2.96.9-3.75 2.27-1.6 2.78-.41 6.89 1.15 9.14.76 1.1 1.67 2.34 2.86 2.3 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.77.74 2.98.72 1.24-.02 2.02-1.12 2.77-2.23.88-1.28 1.24-2.52 1.26-2.59-.03-.01-2.41-.93-2.44-3.65zM14.1 5.86c.63-.77 1.06-1.83.94-2.9-.91.04-2.02.61-2.67 1.37-.58.67-1.1 1.76-.96 2.8 1.02.08 2.06-.52 2.69-1.27z"/></svg>
         Download for macOS <small>v1.0.5</small>
       </a>
-      <span class="btn disabled" aria-disabled="true">
+      <a class="btn" href="https://github.com/duychung-keytechx/Kbot/releases/download/v1.0.5/Kbot_1.0.5_x64-setup.exe">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.5 10.5 4.5v7H3zm0 13 7.5 1v-7H3zm8.5 1.1L21 21v-8.5h-9.5zm0-15.2V11.5H21V3z"/></svg>
-        Windows <small>coming soon</small>
-      </span>
+        Download for Windows <small>v1.0.5</small>
+      </a>
     </div>
-    <div class="meta">Universal build for Apple Silicon and Intel · macOS 10.13 or later · <a href="https://github.com/duychung-keytechx/Kbot/releases">All releases</a></div>
+    <div class="meta">macOS 10.13 or later, Apple Silicon and Intel · Windows 10 and 11, 64-bit · <a href="https://github.com/duychung-keytechx/Kbot/releases">All releases</a></div>
     <div class="hero-video">
       <video src="assets/videos/team-agent.mp4" poster="assets/videos/team-agent.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Kbot Agent Teams demo"></video>
     </div>
@@ -326,7 +328,7 @@ try { var t = localStorage.getItem('kbot-theme'); if (t) document.documentElemen
       <div class="card">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
         <h3>Your data stays local</h3>
-        <p>Bots and chats are stored in SQLite on your Mac. Kbot runs the Claude Code or Codex CLI you're already signed in to.</p>
+        <p>Bots and chats are stored in SQLite on your computer. Kbot runs the Claude Code or Codex CLI you're already signed in to.</p>
         <span class="since">1.0.0</span>
       </div>
       <div class="card">
@@ -389,6 +391,7 @@ try { var t = localStorage.getItem('kbot-theme'); if (t) document.documentElemen
           <li><b>Each bot picks its own AI.</b> A new AI Provider tab in Edit sets the provider (Claude or Codex), model and reasoning effort for one bot. "Use Kbot Settings" goes back to the app default.</li>
           <li>Chats, jobs, onboarding and team planning all run on the bot's own choice. Changing only the model keeps the conversation.</li>
           <li>A bot on a provider that isn't set up tells you how to fix it.</li>
+          <li><b>Windows installer</b> for 64-bit Windows 10 and 11, added Nov 16.</li>
         </ul>
       </li>
       <li>
@@ -441,27 +444,39 @@ try { var t = localStorage.getItem('kbot-theme'); if (t) document.documentElemen
     <div class="section-head">
       <div class="eyebrow">Get started</div>
       <h2>Install Kbot</h2>
-      <p>Three steps on a Mac. A Windows installer is coming soon.</p>
+      <p>Three steps on a Mac or a Windows PC.</p>
     </div>
     <div class="steps">
       <div class="card">
         <h3><span class="num" style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:13px">1</span>Download and install</h3>
+        <div class="os">macOS</div>
         <ol>
           <li><a href="https://github.com/duychung-keytechx/Kbot/releases/download/v1.0.5/Kbot_1.0.5_universal.dmg">Download Kbot_1.0.5_universal.dmg</a>.</li>
           <li>Open it and drag <b>Kbot</b> into <b>Applications</b>.</li>
         </ol>
+        <div class="os">Windows</div>
+        <ol>
+          <li><a href="https://github.com/duychung-keytechx/Kbot/releases/download/v1.0.5/Kbot_1.0.5_x64-setup.exe">Download Kbot_1.0.5_x64-setup.exe</a>.</li>
+          <li>Run it and follow the steps. Kbot is added to the Start menu.</li>
+        </ol>
       </div>
       <div class="card">
-        <h3><span class="num" style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:13px">2</span>Open it the first time</h3>
+        <h3><span class="num" style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:13px">2</span>Allow it the first time</h3>
+        <div class="os">macOS</div>
         <ol>
           <li>The build isn't notarized by Apple yet, so macOS blocks the first launch. Open <b>System Settings › Privacy &amp; Security</b>, scroll down and click <b>Open Anyway</b>.</li>
           <li>Or run this in Terminal:</li>
         </ol>
         <pre><code>xattr -dr com.apple.quarantine /Applications/Kbot.app</code></pre>
+        <div class="os">Windows</div>
+        <ol>
+          <li>The installer isn't code-signed yet, so Windows may say <b>"Windows protected your PC"</b>. Click <b>More info</b>, then <b>Run anyway</b>.</li>
+        </ol>
       </div>
       <div class="card">
         <h3><span class="num" style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:13px">3</span>Sign in to an AI</h3>
         <p style="color:var(--muted);font-size:15px;margin:8px 0 0">Claude (the default) needs a Pro or Max plan. Codex works with ChatGPT sign-in, an API key, or a model set in <code>~/.codex/config.toml</code>.</p>
+        <div class="os">macOS</div>
         <pre><code># Claude
 curl -fsSL https://claude.ai/install.sh | bash
 claude auth login
@@ -469,9 +484,13 @@ claude auth login
 # or Codex
 npm install -g @openai/codex
 codex login</code></pre>
+        <div class="os">Windows (PowerShell)</div>
+        <pre><code>irm https://claude.ai/install.ps1 | iex
+claude auth login</code></pre>
+        <p style="color:var(--muted);font-size:14px;margin:8px 0 0">Claude Code on Windows also needs <a href="https://git-scm.com/downloads/win">Git for Windows</a>. On Windows, use Claude for now. Codex support there is still in progress.</p>
       </div>
     </div>
-    <p class="note">Universal build: Apple Silicon and Intel, macOS 10.13 or later.</p>
+    <p class="note">macOS 10.13 or later on Apple Silicon and Intel. Windows 10 and 11, 64-bit.</p>
   </div>
 </section>
 
@@ -484,7 +503,10 @@ codex login</code></pre>
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.14-2.76.83-3.47.83-.72 0-1.82-.81-2.99-.79-1.54.02-2.96.9-3.75 2.27-1.6 2.78-.41 6.89 1.15 9.14.76 1.1 1.67 2.34 2.86 2.3 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.77.74 2.98.72 1.24-.02 2.02-1.12 2.77-2.23.88-1.28 1.24-2.52 1.26-2.59-.03-.01-2.41-.93-2.44-3.65zM14.1 5.86c.63-.77 1.06-1.83.94-2.9-.91.04-2.02.61-2.67 1.37-.58.67-1.1 1.76-.96 2.8 1.02.08 2.06-.52 2.69-1.27z"/></svg>
         Download for macOS
       </a>
-      <span class="btn disabled" aria-disabled="true">Windows <small>coming soon</small></span>
+      <a class="btn" href="https://github.com/duychung-keytechx/Kbot/releases/download/v1.0.5/Kbot_1.0.5_x64-setup.exe">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.5 10.5 4.5v7H3zm0 13 7.5 1v-7H3zm8.5 1.1L21 21v-8.5h-9.5zm0-15.2V11.5H21V3z"/></svg>
+        Download for Windows
+      </a>
     </div>
   </div>
 </section>

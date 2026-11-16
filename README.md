@@ -5,9 +5,7 @@
 <p align="center">
 <a href="https://duychung-keytechx.github.io/Kbot/"><b>Website and demo videos</b></a>
 &nbsp;·&nbsp;
-<a href="https://github.com/duychung-keytechx/Kbot/releases/latest"><b>Download for macOS</b></a>
-&nbsp;·&nbsp;
-Windows coming soon
+<a href="https://github.com/duychung-keytechx/Kbot/releases/latest"><b>Download for macOS or Windows</b></a>
 </p>
 
 <p align="center">
