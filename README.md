@@ -3,9 +3,11 @@
 <p align="center"><b>Don't just chat with AI. Put it to work.</b></p>
 
 <p align="center">
-<a href="https://duychung-keytechx.github.io/Kbot/"><b>Website and demo videos</b></a>
+<a href="https://didicook.github.io/Kbot/"><b>Website and demo videos</b></a>
 &nbsp;·&nbsp;
-<a href="https://github.com/duychung-keytechx/Kbot/releases/latest"><b>Download for macOS or Windows</b></a>
+<a href="https://github.com/didicook/Kbot/releases/latest"><b>Download for macOS</b></a>
+&nbsp;·&nbsp;
+Windows coming soon
 </p>
 
 <p align="center">
