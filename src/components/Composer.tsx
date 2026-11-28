@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { ClearIcon, EditIcon, MicIcon, SendIcon, SmallPlusIcon, StopIcon, TrashIcon } from "./Icons";
 
 export type CommandName = "setup" | "clear-history" | "delete";
@@ -10,6 +10,9 @@ export type Mention = { id: string; name: string; avatar: ReactNode; hint?: stri
 
 /** The "@name" being typed at the end of `text`, if any. */
 const mentionQuery = (text: string) => /(?:^|\s)@([^@\n]{0,40})$/.exec(text)?.[1];
+
+/** The tallest the message box grows before it scrolls. */
+const MAX_HEIGHT = 200;
 
 const COMMANDS: Command[] = [
   { name: "setup", description: "Set up or change this bot", icon: <EditIcon /> },
@@ -46,6 +49,7 @@ export function Composer({
   onCommand: (name: CommandName) => Promise<boolean> | void;
 }) {
   const [text, setText] = useState("");
+  const box = useRef<HTMLTextAreaElement>(null);
   const [active, setActive] = useState(0);
   // Escape hides the menu until the text changes.
   const [dismissed, setDismissed] = useState(false);
@@ -74,6 +78,15 @@ export function Composer({
     setActive(0);
     if ((await onCommand(command.name)) === false) setText((t) => t || `/${command.name}`);
   };
+
+  // Grow with the text, up to MAX_HEIGHT; past that it scrolls.
+  useLayoutEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, MAX_HEIGHT)}px`;
+    el.style.overflowY = el.scrollHeight > MAX_HEIGHT ? "auto" : "hidden";
+  }, [text]);
 
   const send = async () => {
     const typed = commands.find((c) => `/${c.name}` === text.trim());
@@ -145,7 +158,7 @@ export function Composer({
         </div>
       )}
       <form
-        className="flex items-center gap-2.5 self-stretch rounded-[23px] border border-composer-line bg-surface py-1.5 pr-1.5 pl-2 shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
+        className="flex items-end gap-2.5 self-stretch rounded-[23px] border border-composer-line bg-surface py-1.5 pr-1.5 pl-2 shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
         onSubmit={(e) => {
           e.preventDefault();
           void send();
@@ -155,7 +168,9 @@ export function Composer({
         <button type="button" aria-label="Add" className="flex size-8 shrink-0 items-center justify-center rounded-full bg-bubble">
           <SmallPlusIcon />
         </button>
-        <input
+        <textarea
+          ref={box}
+          rows={1}
           value={text}
           role="combobox"
           aria-expanded={open}
@@ -168,7 +183,14 @@ export function Composer({
             setDismissed(false);
           }}
           onKeyDown={(e) => {
-            if (!open) return;
+            if (!open) {
+              // Enter sends; Shift+Enter adds a line. Leave Enter alone while an IME is composing.
+              if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing && e.keyCode !== 229) {
+                e.preventDefault();
+                void send();
+              }
+              return;
+            }
             if (e.key === "ArrowDown" || e.key === "ArrowUp") {
               e.preventDefault();
               const step = e.key === "ArrowDown" ? 1 : -1;
@@ -186,7 +208,7 @@ export function Composer({
             }
           }}
           placeholder={placeholder ?? `Message ${botName}`}
-          className="min-w-0 flex-1 text-[14px] leading-[normal] text-ink"
+          className="max-h-[200px] min-w-0 flex-1 resize-none py-1.5 text-[14px] leading-5 text-ink"
         />
         {running && !canSend ? (
           <button

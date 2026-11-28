@@ -88,7 +88,7 @@ export const button = (label: string) => `(//button[normalize-space()="${label}"
 
 /** Types into the composer and sends. */
 export async function send(browser: Browser, botName: string, text: string) {
-  await browser.$(`input[placeholder="Message ${botName}"]`).setValue(text);
+  await browser.$(`textarea[placeholder="Message ${botName}"]`).setValue(text);
   await browser.$('button[aria-label="Send"]').click();
 }
 

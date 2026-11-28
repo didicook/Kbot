@@ -21,7 +21,7 @@ afterEach(() => {
   rmSync(dataDir, { recursive: true, force: true });
 });
 
-const composer = (name: string) => `input[placeholder="Message ${name}"]`;
+const composer = (name: string) => `textarea[placeholder="Message ${name}"]`;
 const menu = '[role="listbox"][aria-label="Commands"]';
 // An option shows its name, then its description.
 const nameOf = (option: ChainablePromiseElement) => option.$('.//span[starts-with(text(), "/")]').getText();
