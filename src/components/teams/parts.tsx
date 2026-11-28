@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import type { Avatar, Bot, BotImage, Team, TaskStatus } from "../../lib/types";
 import { BotAvatar } from "../avatars/BotAvatar";
+import { MessageText } from "../MessageText";
 
 /** A team's avatar: a rounded tile in the team color with three member heads. */
 export function TeamAvatar({ color, size = 34 }: { color: string; size?: number }) {
@@ -125,7 +126,7 @@ export function BriefBubble({
   message: { from: string; to: string; text: string; review: boolean };
 }) {
   return (
-    <div className="flex flex-col items-start gap-1.5">
+    <div className="flex flex-col items-start gap-1.5 self-stretch">
       <div className="flex items-center gap-1.5">
         <LeadAvatar color={color} size={16} />
         <p className="text-[12px] font-medium text-brief-ink">
@@ -133,10 +134,8 @@ export function BriefBubble({
           {message.review && " · review"}
         </p>
       </div>
-      <div className="rounded-2xl border border-brief-line bg-brief-bg px-3.5 py-[11px]">
-        <p className="selectable max-w-[530px] text-[14px] leading-[21px] break-words whitespace-pre-wrap text-ink">
-          {message.text}
-        </p>
+      <div className="self-stretch rounded-2xl border border-brief-line bg-brief-bg px-3.5 py-[11px]">
+        <MessageText text={message.text} />
       </div>
     </div>
   );

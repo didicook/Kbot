@@ -18,6 +18,7 @@ import {
 import { SettingsPanel } from "./SettingsPanel";
 import { TagPills, tagsOf } from "./tags";
 import { BriefBubble, CheckNote, LeadAvatar, StatusLabel } from "./teams/parts";
+import { MessageText } from "./MessageText";
 
 export function ChatView({
   bot,
@@ -206,12 +207,10 @@ export function MessageItem({
       return <BriefBubble color={team?.color ?? "var(--color-unsaved)"} message={message} />;
     case "member":
       return (
-        <div className="flex flex-col items-start gap-1.5">
+        <div className="flex flex-col items-start gap-1.5 self-stretch">
           <p className="text-[12px] font-medium text-subtle">{message.name}</p>
-          <div className="rounded-2xl bg-bubble px-3.5 py-[11px]">
-            <p className="selectable max-w-[530px] text-[14px] leading-[21px] break-words whitespace-pre-wrap text-ink">
-              {message.text}
-            </p>
+          <div className="self-stretch rounded-2xl bg-bubble px-3.5 py-[11px]">
+            <MessageText text={message.text} />
           </div>
         </div>
       );
@@ -219,10 +218,8 @@ export function MessageItem({
       return null;
     case "agent":
       return (
-        <div className="rounded-2xl bg-bubble px-3.5 py-[11px]">
-          <p className="selectable max-w-[530px] text-[14px] leading-[21px] break-words whitespace-pre-wrap text-ink">
-            {message.text}
-          </p>
+        <div className="self-stretch rounded-2xl bg-bubble px-3.5 py-[11px]">
+          <MessageText text={message.text} />
         </div>
       );
     case "computer":

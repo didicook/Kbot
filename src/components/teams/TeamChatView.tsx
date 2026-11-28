@@ -13,6 +13,7 @@ import { TagPills, tagsOf } from "../tags";
 import { CheckNote, LeadAvatar, Speaker, TeamAvatar } from "./parts";
 import { PlanCard } from "./PlanCard";
 import type { TeamSettingsTab } from "./TeamSettingsDialog";
+import { MessageText } from "../MessageText";
 
 /** The member a message starts with, as "@Name"; the longest name wins. */
 export function mentionOf(text: string, members: Bot[]): Bot | undefined {
@@ -81,7 +82,7 @@ export function TeamChatView({
     switch (m.type) {
       case "agent":
         return (
-          <div key={m.id} className="flex flex-col items-start gap-1.5">
+          <div key={m.id} className="flex flex-col items-start gap-1.5 self-stretch">
             <Speaker avatar={<LeadAvatar color={team.color} size={16} />} name={leadName} />
             <Bubble text={m.text} />
           </div>
@@ -89,7 +90,7 @@ export function TeamChatView({
       case "member": {
         const bot = bots.find((b) => b.id === m.botId);
         return (
-          <div key={m.id} className="flex flex-col items-start gap-1.5">
+          <div key={m.id} className="flex flex-col items-start gap-1.5 self-stretch">
             <button type="button" onClick={() => bot && onOpen(bot.id)} className="rounded-md hover:bg-row-hover">
               <Speaker avatar={bot ? <BotAvatar avatar={bot.avatar} size={16} /> : null} name={m.name} />
             </button>
@@ -173,8 +174,8 @@ export function TeamChatView({
 
 function Bubble({ text }: { text: string }) {
   return (
-    <div className="rounded-2xl bg-bubble px-3.5 py-[11px]">
-      <p className="selectable max-w-[530px] text-[14px] leading-[21px] break-words whitespace-pre-wrap text-ink">{text}</p>
+    <div className="self-stretch rounded-2xl bg-bubble px-3.5 py-[11px]">
+      <MessageText text={text} />
     </div>
   );
 }
